@@ -1,15 +1,15 @@
 import { Footer } from "./footer/Footer"
-import { Navbar } from "./navbar/Navbar"
 import libfront from "../assets/libfront.jpg"
-import { Header } from "./header/Header"
+
 
 
 
 export const LandingPage = () => {
   return (
     <>
-    <Navbar />
-    <Header />
+  
+
+
     <div className="flex flex-col-reverse md:flex-row justify-center gap-2 h-fit md:p-8">
     <div className="w-full md:w-fit items-center">
         <img src={libfront} alt="Library Image" width="450" height="200"/>

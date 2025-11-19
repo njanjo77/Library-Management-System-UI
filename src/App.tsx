@@ -1,18 +1,18 @@
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router-dom";
 import Error from "./components/Error";
-import { LandingPage } from "./components/LandingPage";
 import { About } from "./components/about/About";
-import { Register } from "./components/Authentification/Register";
+import Register from "./components/Authentification/Register";
 import { Login } from "./components/Authentification/Login";
 import { Footer } from "./components/footer/Footer";
+import { Heropage } from "./pages/Heropage";
 
 
 function App() {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandingPage />
+    element: <Heropage />
   },
    {
     path: "/about",

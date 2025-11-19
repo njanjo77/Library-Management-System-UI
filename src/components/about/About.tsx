@@ -3,6 +3,7 @@ import libpic from "../../assets/libpic.png"
 import { Footer } from "../footer/Footer"
 
 export const About = () => {
+  
   return (
     <>
     <Navbar />
