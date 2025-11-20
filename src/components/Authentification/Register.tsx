@@ -21,8 +21,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-base-200 flex items-center justify-center px-4">
-      <div className="card w-full max-w-md bg-base-100 shadow-2xl">
+    <div className="min-h-screen bg-red-400 flex items-center justify-center px-4">
+      <div className="card w-full max-w-md bg-green-100 shadow-2xl">
         <div className="card-body">
           <div className="flex items-center mb-6">
             <Link to="/" className="btn btn-ghost btn-circle">
@@ -31,33 +31,33 @@ export default function RegisterPage() {
             <h2 className="text-2xl font-bold flex-1 text-center text-red-700">Create Account</h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Same form fields as before */}
+          <form onSubmit={handleSubmit} className="space-y-5 ">
+          
             <input
               type="text"
-              placeholder="Full Name"
-              className="input input-bordered w-full"
+              placeholder="Username"
+              className="input input-bordered w-full bg-blue-100"
               onChange={(e) => setFormData({...formData, name: e.target.value})}
               required
             />
             <input
               type="email"
               placeholder="Email"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-blue-100"
               onChange={(e) => setFormData({...formData, email: e.target.value})}
               required
             />
             <input
               type="password"
               placeholder="Password"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-blue-100"
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
             />
             <input
               type="password"
               placeholder="Confirm Password"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-blue-100"
               onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
               required
             />
