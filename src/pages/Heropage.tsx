@@ -9,42 +9,7 @@ import { useNavigate } from "react-router";
 
 export const Heropage = () => {
     const Navigate = useNavigate();
-    // const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
-    // const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
-
-    // const [signUpName, setSignUpName] = useState("");
-    // const [signUpEmail, setSignUpEmail] = useState("");
-    // const [signUpPassword, setSignUpPassword] = useState("");
-    // const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
-    
-
-    // const handleSignIn = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     // Handle sign-in logic here
-    //     console.log("Signing in with", email, password);
-    //     alert(`Welcome Back ${email}`);
-    //     setIsSignInModalOpen(false);
-    //     setEmail("");
-    //     setPassword("");
-
-    // };
-    // const handleSignUp = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     if(signUpPassword !== signUpConfirmPassword) {
-    //         alert("Passwords do not match!");
-    //         return;
-    //     }
-    //     console.log('Sign Up:', { name: signUpName, email: signUpEmail});
-    //     alert(`Signed Up Successfully as ${signUpName}`);
-    //     setIsSignUpModalOpen(false);
-    //     setSignUpName("");
-    //     setSignUpEmail("");
-    //     setSignUpPassword("");
-    //     setSignUpConfirmPassword("");
-    // };
-
+ 
 
 
     return (

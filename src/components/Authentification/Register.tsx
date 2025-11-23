@@ -1,24 +1,54 @@
-import React, { useState } from "react";
+
 import { ArrowLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
+import * as yup from "yup"
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+type RegisterInputs = {
+  user_name: string
+  email: string
+  password: string
+  confirm_password: string
+}
+
+const schema = yup.object({
+  user_name: yup.string().max(50, 'Max 50 characters').required('First name is required'),
+  email: yup.string().email('Invalid email').max(100, 'Max 100 characters').required('Email is required'),
+  password: yup.string().min(6, 'Min 6 characters').max(255, 'Max 255 characters').required('Password is required'),
+  confirm_password: yup.string().oneOf([yup.ref('password')], 'Passwords must match').required('Confirm Password is required')
+});
 
 
-export default function RegisterPage() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: '', email: '', password: '', confirmPassword: ''
-  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
-      return;
-    }
-    // Here you would call your auth API
-    alert(`Account created for ${formData.name}!`);
-    navigate('/dashboard'); // or /login
-  };
+export const Register = ()  => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<RegisterInputs>({
+    resolver: yupResolver(schema)
+  })
+
+  const onSubmit: SubmitHandler<RegisterInputs> = (data) =>{
+        console.log(data);
+  }
+
+  // const navigate = useNavigate();
+  // const [formData, setFormData] = useState({
+  //   name: '', email: '', password: '', confirmPassword: ''
+  // });
+
+  // const handleSubmit: = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (formData.password !== formData.confirmPassword) {
+  //     alert("Passwords don't match!");
+  //     return;
+  //   }
+  //   // Here you would call your auth API
+  //   alert(`Account created for ${formData.name}!`);
+  //   navigate('/dashboard'); // or /login
+  // };
 
   return (
     <div className="min-h-screen bg-red-400 flex items-center justify-center px-4">
@@ -31,36 +61,71 @@ export default function RegisterPage() {
             <h2 className="text-2xl font-bold flex-1 text-center text-red-700">Create Account</h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5 ">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">
           
             <input
               type="text"
+              {...register("user_name")}
               placeholder="Username"
               className="input input-bordered w-full bg-blue-100"
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              // onChange={(e) => setFormData({...formData, name: e.target.value})}
               required
             />
+            {
+                errors.user_name && (
+                <span className="text-red-700 text-sm">{errors.user_name.message}</span>
+              )
+            }
+
+
+
+
             <input
               type="email"
+             {...register("email")}
               placeholder="Email"
               className="input input-bordered w-full bg-blue-100"
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              // onChange={(e) => setFormData({...formData, email: e.target.value})}
               required
             />
+             {
+              errors.email && (
+                <span className="text-red-700 text-sm">{errors.email.message}</span>
+              )
+            }
+
+
+
             <input
               type="password"
+              {...register("password")}
               placeholder="Password"
               className="input input-bordered w-full bg-blue-100"
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              // onChange={(e) => setFormData({...formData, password: e.target.value})}
               required
             />
+             {
+              errors.password && (
+                <span className="text-red-700 text-sm">{errors.password.message}</span>
+              )
+            }
+
+
+
+
             <input
               type="password"
+              {...register("confirm_password")}
               placeholder="Confirm Password"
               className="input input-bordered w-full bg-blue-100"
-              onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+              // onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
               required
             />
+             {
+              errors.confirm_password && (
+                <span className="text-red-700 text-sm">{errors.confirm_password.message}</span>
+              )
+            }
 
             <button type="submit" className="btn bg-red-600 w-full">
               Create Account
@@ -77,96 +142,3 @@ export default function RegisterPage() {
   );
 }
 
-
-
-
-
-
-// export const Register = () => {
-//   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
-//   const [signUpName, setSignUpName] = useState("");
-//   const [signUpEmail, setSignUpEmail] = useState("");
-//   const [signUpPassword, setSignUpPassword] = useState("");
-//   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
-//   const handleSignUp = (e: React.FormEvent) => {
-//     e.preventDefault();
-//     // Handle sign-up logic here
-//     console.log("Name:", signUpName);
-//     console.log("Email:", signUpEmail);
-//     console.log("Password:", signUpPassword);
-//     console.log("Confirm Password:", signUpConfirmPassword);
-//     // Close the modal after sign-up
-//     setIsSignUpModalOpen(false);
-//   };
-//   return (
-//     <>
-//       Sign-Up Modal
-//         <div className={`modal ${isSignUpModalOpen ? 'modal-open' : ''}`}>
-//         <div className="modal-box max-w-md">
-//           <h3 className="font-bold text-2xl mb-2">Create Your Account</h3>
-//           <p className="text-base-content/60 mb-6">Join the future of library management</p>
-
-//           <form onSubmit={handleSignUp} className="space-y-5">
-//             <div className="form-control">
-//               <label className="label"><span className="label-text font-medium">Full Name</span></label>
-//               <input
-//                 type="text"
-//                 placeholder="John Doe"
-//                 value={signUpName}
-//                 onChange={(e) => setSignUpName(e.target.value)}
-//                 className="input input-bordered"
-//                 required
-//               />
-//             </div>
-
-//             <div className="form-control">
-//               <label className="label"><span className="label-text font-medium">Email</span></label>
-//               <input
-//                 type="email"
-//                 placeholder="john@library.com"
-//                 value={signUpEmail}
-//                 onChange={(e) => setSignUpEmail(e.target.value)}
-//                 className="input input-bordered"
-//                 required
-//               />
-//             </div>
-
-//             <div className="form-control">
-//               <label className="label"><span className="label-text font-medium">Password</span></label>
-//               <input
-//                 type="password"
-//                 placeholder="••••••••"
-//                 value={signUpPassword}
-//                 onChange={(e) => setSignUpPassword(e.target.value)}
-//                 className="input input-bordered"
-//                 required
-//               />
-//             </div>
-
-//             <div className="form-control">
-//               <label className="label"><span className="label-text font-medium">Confirm Password</span></label>
-//               <input
-//                 type="password"
-//                 placeholder="••••••••"
-//                 value={signUpConfirmPassword}
-//                 onChange={(e) => setSignUpConfirmPassword(e.target.value)}
-//                 className="input input-bordered"
-//                 required
-//               />
-//             </div>
-
-//             <div className="modal-action mt-8">
-//               <button type="button" onClick={() => setIsSignUpModalOpen(false)} className="btn btn-ghost">
-//                 Cancel
-//               </button>
-//               <button type="submit" className="btn btn-primary px-10">
-//                 Create Account
-//               </button>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-
-//     </>
-//   )
-// }
