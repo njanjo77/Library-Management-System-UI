@@ -1,30 +1,49 @@
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router-dom";
 import Error from "./components/Error";
-import { About } from "./components/about/About";
 import { Register } from "./components/Authentification/Register";
 import { Login } from "./components/Authentification/Login";
 import { Footer } from "./components/footer/Footer";
 import { Heropage } from "./pages/Heropage";
+import AdminDashboard from "./pages/AdminDashboard";
+import { Books } from "./pages/Books";
+import { Members } from "./pages/Members";
+import { Borrowrecords } from "./pages/Borrowrecords";
+import { SettingsForm } from "./pages/Settings";
+import UserDashboard from "./pages/UserDashboard";
 
 
 function App() {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Heropage />
+   element: <Heropage />
   },
-   {
-    path: "/about",
-    element: <About />
-  },
-   {
-    path: "/contact",
-    element: <h1>Welcome to Homepage</h1>
-  },
+ 
    {
     path: "/books",
-    element: <h1>Welcome to Homepage</h1>
+    element: <Books />
+  },
+   {
+    path: "/members",
+    element: <Members />
+  },
+  {
+
+    path: "/borrowrecords",
+    element: <Borrowrecords />
+  },
+  {
+    path: "/settings",
+    element: <SettingsForm />
+  },
+  {
+    path: "/admin",
+    element: <AdminDashboard />
+  },
+  {
+    path: "/userdashboard",
+    element: <UserDashboard />
   },
    {
     path: "/register",

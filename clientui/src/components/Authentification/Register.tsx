@@ -4,6 +4,7 @@ import { Link,  } from 'react-router-dom';
 import * as yup from "yup"
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { usersAPI } from '@/auth/usersAPI';
 
 type RegisterInputs = {
   user_name: string
@@ -22,6 +23,7 @@ const schema = yup.object({
 
 
 export const Register = ()  => {
+  const [createUser] = usersAPI.useCreateUserMutation();
   const {
     register,
     handleSubmit,
@@ -30,8 +32,13 @@ export const Register = ()  => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit: SubmitHandler<RegisterInputs> = (data) =>{
-        console.log(data);
+  const onSubmit: SubmitHandler<RegisterInputs> = async (data) =>{
+        try {
+          const response = await createUser(data).unwrap()
+          console.log("Response", response)
+        } catch (error) {
+          console.log("Error creating user", error)
+        }
   }
 
   // const navigate = useNavigate();

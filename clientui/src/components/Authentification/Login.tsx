@@ -43,14 +43,14 @@ export const Login = () => {
         onChange={() => setIsSignInModalOpen(!isSignInModalOpen)}
         className="modal-toggle"
       /> */}
-      <div className= "modal modal-open">
+      <div className= "modal modal-open bg-black bg-opacity-50">
         <div className="modal-box">
-          <h3 className="font-bold text-2xl mb-6">Welcome Back!</h3>
+          <h3 className="font-bold text-2xl text-red-600 mb-6">Welcome Back!</h3>
           
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Email</span>
+                <span className="label-text font-extrabold">Email</span>
               </label>
               <input
                 type="email"
@@ -70,7 +70,7 @@ export const Login = () => {
 
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text font-extrabold">Password</span>
               </label>
               <input
                 type="password"
@@ -92,19 +92,21 @@ export const Login = () => {
                 <input type="checkbox" className="checkbox checkbox-primary" />
                 <span className="label-text ml-2">Remember me</span>
               </label>
-              <a href="#" className="link link-primary text-sm">Forgot password?</a>
+              {/* <a href="#" className="link link-primary text-sm">Forgot password?</a> */}
             </div>
 
             <div className="modal-action mt-8">
               <button
                 type="button"
                 // onClick={() => setIsSignInModalOpen(false)}
-                className="btn btn-ghost"
+                className="btn btn-ghost bg-gray-300 hover:bg-gray-500 text-black px-6"
               >
-                Cancel
+                Cancel{' '}
+                <NavLink to="/"></NavLink>
               </button>
-              <button type="submit" className="btn btn-primary px-8">
+              <button type="submit" className="btn text-white bg-red-600 px-8">
                 Sign In
+                <NavLink to="/userdashboard"></NavLink>
               </button>
               <p className="text-center text-sm">
               Don't have an account?{' '}
