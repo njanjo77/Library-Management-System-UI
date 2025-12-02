@@ -34,10 +34,13 @@ app.get("/", (req, res) => {
 
 // app.get("/", (req, res) => {res.send("Hello, the express server is running")})
 // app.get("/home",(req,res)=>{res.send("Try Again after 20mins")})
-app.post('/users',(req,res)=>{res.json({ message: "User created"})})
+app.post("/users/create",rateLimiterMiddleware, async (req, res) => {
+    res.json({ message: "User created"})
+});
+app.post('/users',(req,res)=>{res.json({ message: "User created"})});
 
 
-const port = process.env.PORT  ;
+const port = process.env.PORT;
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
 })
