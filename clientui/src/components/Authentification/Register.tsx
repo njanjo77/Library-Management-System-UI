@@ -5,16 +5,19 @@ import * as yup from "yup"
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { usersAPI } from '@/auth/usersAPI';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner'
+// import axios from 'axios';
 
 type RegisterInputs = {
-  user_name: string
+  username: string
   email: string
   password: string
   confirm_password: string
 }
 
 const schema = yup.object({
-  user_name: yup.string().max(50, 'Max 50 characters').required('First name is required'),
+  username: yup.string().max(50, 'Max 50 characters').required('Username is required'),
   email: yup.string().email('Invalid email').max(100, 'Max 100 characters').required('Email is required'),
   password: yup.string().min(6, 'Min 6 characters').max(255, 'Max 255 characters').required('Password is required'),
   confirm_password: yup.string().oneOf([yup.ref('password')], 'Passwords must match').required('Confirm Password is required')
@@ -23,21 +26,36 @@ const schema = yup.object({
 
 
 export const Register = ()  => {
-  const [createUser] = usersAPI.useCreateUserMutation();
+  const navigate = useNavigate();
+
+  const [createUser, {isLoading}] = usersAPI.useCreateUserMutation()
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<RegisterInputs>({
     resolver: yupResolver(schema)
+
   })
 
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) =>{
         try {
-          const response = await createUser(data).unwrap()
+          const userData = { ...data, role: 'Member' as const };
+          console.log("Sending user data to backend:", userData);
+          // await axios.post('http://localhost:3000/api/users/create', userData)
+          const response = await createUser(userData).unwrap()
           console.log("Response", response)
-        } catch (error) {
+          toast.success(response.message)
+          // redirect the user to verify
+          setTimeout(()=>{
+              navigate('/login', {
+                   state: {email:data.email}
+              })
+          }, 2000)
+
+        } catch (error:any) {
           console.log("Error creating user", error)
+          toast.error(error.data.error)
         }
   }
 
@@ -72,15 +90,15 @@ export const Register = ()  => {
           
             <input
               type="text"
-              {...register("user_name")}
+              {...register("username")}
               placeholder="Username"
               className="input input-bordered w-full bg-blue-100"
               // onChange={(e) => setFormData({...formData, name: e.target.value})}
               required
             />
             {
-                errors.user_name && (
-                <span className="text-red-700 text-sm">{errors.user_name.message}</span>
+                errors.username && (
+                <span className="text-red-700 text-sm">{errors.username.message}</span>
               )
             }
 
@@ -134,8 +152,14 @@ export const Register = ()  => {
               )
             }
 
-            <button type="submit" className="btn bg-red-600 w-full">
-              Create Account
+            <button type="submit" className="btn bg-red-600 w-full " disabled= {isLoading}>
+              {
+                isLoading ? (
+                  <>
+                  <span className='loading loading-spinner text-primary'/>Please Wait...
+                  </>
+                ):"Create Account"
+              }
             </button>
 
             <p className="text-center text-sm">

@@ -17,7 +17,7 @@ const persistConfig = {
 
 
 const rootReducer = combineReducers({
-    [usersAPI.reducerPath]: usersAPI.reducer,
+    [usersAPI.reducerPath]: usersAPI.reducer
 });
 
 

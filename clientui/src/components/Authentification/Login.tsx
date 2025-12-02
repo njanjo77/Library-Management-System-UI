@@ -1,7 +1,8 @@
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import {  NavLink, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 
 
@@ -18,12 +19,18 @@ const schema = yup.object({
 
 
 export const Login = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const emailState = location.state?.email || ''
   const {
       register,
       handleSubmit,
       formState: { errors }
     } = useForm<LoginInputs>({
-      resolver: yupResolver(schema)
+      resolver: yupResolver(schema),
+      defaultValues:{
+        email:emailState
+      }
     });
 
     const onSubmit: SubmitHandler<LoginInputs> = (data) =>{
@@ -43,8 +50,8 @@ export const Login = () => {
         onChange={() => setIsSignInModalOpen(!isSignInModalOpen)}
         className="modal-toggle"
       /> */}
-      <div className= "modal modal-open bg-black bg-opacity-50">
-        <div className="modal-box">
+      <div className= "modal modal-open bg-black bg-opacity-50 ">
+        <div className="modal-box bg-gray-200">
           <h3 className="font-bold text-2xl text-red-600 mb-6">Welcome Back!</h3>
           
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -89,22 +96,22 @@ export const Login = () => {
 
             <div className="flex justify-between items-center">
               <label className="cursor-pointer label">
-                <input type="checkbox" className="checkbox checkbox-primary" />
+                <input type="checkbox" className="checkbox checkbox-primary bg-white" />
                 <span className="label-text ml-2">Remember me</span>
               </label>
               {/* <a href="#" className="link link-primary text-sm">Forgot password?</a> */}
             </div>
 
-            <div className="modal-action mt-8">
               <button
                 type="button"
-                // onClick={() => setIsSignInModalOpen(false)}
-                className="btn btn-ghost bg-gray-300 hover:bg-gray-500 text-black px-6"
+                onClick={() => navigate('/')}
+                className="btn btn-ghost bg-gray-300 hover:bg-gray-500 text-black px-6 border-r"
               >
-                Cancel{' '}
-                <NavLink to="/"></NavLink>
+                Cancel
+                
               </button>
-              <button type="submit" className="btn text-white bg-red-600 px-8">
+              
+              <button type="submit" className="btn text-white bg-red-600 px-6 hover:bg-red-800">
                 Sign In
                 <NavLink to="/userdashboard"></NavLink>
               </button>
@@ -112,7 +119,6 @@ export const Login = () => {
               Don't have an account?{' '}
               <NavLink to="/register" className="link link-primary">Get Started</NavLink>
             </p>
-            </div>
           </form>
         </div>
         </div>

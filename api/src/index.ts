@@ -9,11 +9,15 @@ import { rateLimiterMiddleware } from "./Middlewares/rateLimiter";
 import cors from 'cors'
 
 const app = express()
-app.use(express.json())
+
+app.use(cors());
 app.use(cors({
-    origin:"*",
+    origin:"http://localhost:5173",
     methods:["GET", "POST", "PUT", "DELETE"],
-}))
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 //load routes
 app.use("/api",userRouter)
 app.use("/api",borrowRouter)
@@ -22,18 +26,18 @@ app.use('/api/books', booksRouter);
 app.use('/api', commentsRouter);
 
 //middleware
-app.use(express.json());
+
 
 app.get("/", (req, res) => {
     res.send("Hello, the express server is running")
 })
 
-app.get("/", (req, res) => {res.send("Hello, the express server is running")})
-app.get("/home",(req,res)=>{res.send("Try Again after 20mins")})
+// app.get("/", (req, res) => {res.send("Hello, the express server is running")})
+// app.get("/home",(req,res)=>{res.send("Try Again after 20mins")})
 app.post('/users',(req,res)=>{res.json({ message: "User created"})})
 
 
-const port = 3000
+const port = process.env.PORT  ;
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
 })

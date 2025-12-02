@@ -10,8 +10,9 @@ export type TUser = {
     email: string;
     password: string;
     role: string;
-    created_at: string;
-    updated_at: string;
+    date: string;
+    // created_at: string;
+    // updated_at: string;
 
 }
 
@@ -22,14 +23,7 @@ export const usersAPI = createApi({
     baseQuery: fetchBaseQuery({baseUrl: DomainAPI}),
     tagTypes: ["Users"],
     endpoints: (builder) => ({
-        getUsers: builder.query({
-            query: () => ({
-                url: "/users",
-                method: "GET"
-            }),
-            providesTags: ["Users"]
-        }),
-        createUser: builder.mutation <TUser, Partial<TUser>>({
+        createUser: builder.mutation < {message: string }, Partial<TUser>>({
             query: (newUser) => ({
                 url: "/users",
                 method: "POST",

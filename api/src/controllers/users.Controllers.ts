@@ -140,6 +140,7 @@ export const getMemberById = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   try {
       const userData=req.body
+      console.log("Received user creation request with data:", userData);
       const newUser = await userServices.insertUser(userData);
       if(newUser?.success==false){
         res.status(400).json({success:false,message:newUser.Message})
