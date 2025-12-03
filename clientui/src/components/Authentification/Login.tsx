@@ -3,13 +3,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import {  NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { type LoginInputs, useLoginUserMutation } from "@/auth/loginAPI";
+import { toast } from "sonner";
 
 
-
-type LoginInputs = {
-  email: string,
-  password: string
-};
 const schema = yup.object({
     email: yup.string().email('Invalid email').max(100, 'Max 100 characters').required('Email is required'),
     password: yup.string().min(6, 'Min 6 characters').max(255, 'Max 255 characters').required('Password is required'),
@@ -19,6 +16,9 @@ const schema = yup.object({
 
 
 export const Login = () => {
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+
+
   const location = useLocation()
   const navigate = useNavigate()
   const emailState = location.state?.email || ''
@@ -33,23 +33,24 @@ export const Login = () => {
       }
     });
 
-    const onSubmit: SubmitHandler<LoginInputs> = (data) =>{
+    const onSubmit: SubmitHandler<LoginInputs> = async (data) =>{
+      try {
+        const response = await loginUser(data).unwrap()
+        console.log(response);
+        toast.success(response.message)
+        navigate('/userdashboard')
+      } catch (error: any) {
+        console.log(error)
+        toast.error(error.data?.error || 'Login failed')
+      }
             console.log(data);
       }
 
 
 
 
-
-  
   return (
     <>
-        {/* <input
-        type="checkbox"
-        checked={isSignInModalOpen}
-        onChange={() => setIsSignInModalOpen(!isSignInModalOpen)}
-        className="modal-toggle"
-      /> */}
       <div className= "modal modal-open bg-black bg-opacity-50 ">
         <div className="modal-box bg-gray-200">
           <h3 className="font-bold text-2xl text-red-600 mb-6">Welcome Back!</h3>
@@ -111,9 +112,14 @@ export const Login = () => {
                 
               </button>
               
-              <button type="submit" className="btn text-white bg-red-600 px-6 hover:bg-red-800">
-                Sign In
-                <NavLink to="/userdashboard"></NavLink>
+              <button type="submit" className="btn text-white bg-red-600 px-6 hover:bg-red-800" disabled={isLoading}>
+                {
+                  isLoading ?(
+                    <>
+                    <span className='loading loading-spinner text-primary'></span>Signing In...
+                    </>
+                  ):'Sign In'
+                }
               </button>
               <p className="text-center text-sm">
               Don't have an account?{' '}

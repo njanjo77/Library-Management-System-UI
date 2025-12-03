@@ -57,23 +57,10 @@ export const Register = ()  => {
           console.log("Error creating user", error)
           toast.error(error.data.error)
         }
+        console.log(data)
   }
 
-  // const navigate = useNavigate();
-  // const [formData, setFormData] = useState({
-  //   name: '', email: '', password: '', confirmPassword: ''
-  // });
-
-  // const handleSubmit: = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (formData.password !== formData.confirmPassword) {
-  //     alert("Passwords don't match!");
-  //     return;
-  //   }
-  //   // Here you would call your auth API
-  //   alert(`Account created for ${formData.name}!`);
-  //   navigate('/dashboard'); // or /login
-  // };
+ 
 
   return (
     <div className="min-h-screen bg-red-400 flex items-center justify-center px-4">

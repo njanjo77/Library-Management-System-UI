@@ -37,15 +37,13 @@ export const getMembers = async (): Promise<User[]> => {
 export const getUsers = async (): Promise<User[]> => {
   try {
     const pool = await getPool();
-    const role = 'member';
     const result = await pool
       .request()
-      .input("role", role)
-      .query("SELECT * FROM Users WHERE role = @role");
+      .query("SELECT * FROM Users");
 
     return result.recordset;
   } catch (error) {
-    console.error("Failed to fetch members from DB:", error);
+    console.error("Failed to fetch users from DB:", error);
     throw error;
   }
 };

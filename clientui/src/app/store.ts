@@ -1,4 +1,5 @@
 // Configure the store
+import { loginApi } from "@/auth/loginAPI"
 import { usersAPI } from "@/auth/usersAPI"
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import { persistReducer, persistStore } from 'redux-persist'
@@ -12,12 +13,13 @@ const persistConfig = {
   key: 'root',
     version: 1,
     storage,
-    blacklist: [usersAPI.reducerPath],
+    // blacklist: [usersAPI.reducerPath, loginApi.reducerPath],
 }
 
 
 const rootReducer = combineReducers({
-    [usersAPI.reducerPath]: usersAPI.reducer
+    [usersAPI.reducerPath]: usersAPI.reducer,
+    [loginApi.reducerPath]: loginApi.reducer
 });
 
 
@@ -29,7 +31,8 @@ export const store = configureStore({
         getDefaultMiddleware({
             serializableCheck: false,
         })
-        .concat(usersAPI.middleware),
+        .concat(usersAPI.middleware)
+        .concat(loginApi.middleware)
 
 })
 
