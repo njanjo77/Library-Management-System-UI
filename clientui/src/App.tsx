@@ -11,6 +11,7 @@ import { Members } from "./pages/Members";
 import { Borrowrecords } from "./pages/Borrowrecords";
 import { SettingsForm } from "./pages/Settings";
 import UserDashboard from "./pages/UserDashboard";
+import { Toaster } from "sonner";
 
 
 function App() {
@@ -67,6 +68,12 @@ const router = createBrowserRouter([
   return (
     <>
     <RouterProvider router={router} />
+    <Toaster position= 'top-right' toastOptions={{
+      classNames: {
+        error: 'bg-red-500 text-white',
+        success: 'bg-green-500 text-white'
+      }
+    }} />
     </>
   )
 }

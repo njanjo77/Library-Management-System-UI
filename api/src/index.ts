@@ -25,6 +25,9 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/books', booksRouter);
 app.use('/api', commentsRouter);
 
+
+ 
+
 //middleware
 
 
@@ -37,14 +40,14 @@ app.get("/", (req, res) => {
 app.post("/users/create",rateLimiterMiddleware, async (req, res) => {
     res.json({ message: "User created"})
 });
-app.post('/users', async (req, res) => {
-    // TODO: implement user creation logic
-    res.status(201).json({ message: "User endpoint" });
-});
-app.post('/login', async (req, res) => {
-    // TODO: implement authentication logic
-    res.status(200).json({ message: "Login successful" });
-});
+// app.post('/users', async (req, res) => {
+//     // TODO: implement user creation logic
+//     res.status(201).json({ message: "User endpoint" });
+// });
+// app.post('/login', async (req, res) => {
+//     // TODO: implement authentication logic
+//     res.status(200).json({ message: "Login successful" });
+// });
 
 const port = process.env.PORT;
 app.listen(port, () => {

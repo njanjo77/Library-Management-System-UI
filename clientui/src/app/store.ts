@@ -13,6 +13,7 @@ const persistConfig = {
   key: 'root',
     version: 1,
     storage,
+    whitelist: ['User']
     // blacklist: [usersAPI.reducerPath, loginApi.reducerPath],
 }
 

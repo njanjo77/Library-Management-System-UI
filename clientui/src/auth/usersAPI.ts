@@ -23,13 +23,15 @@ export const usersAPI = createApi({
     baseQuery: fetchBaseQuery({baseUrl: DomainAPI}),
     tagTypes: ["Users"],
     endpoints: (builder) => ({
-        createUser: builder.mutation < {message: string }, Partial<TUser>>({
+        createUsers: builder.mutation <TUser, Partial<TUser>>({
             query: (newUser) => ({
-                url: "/users",
+                url: "/users/create",
                 method: "POST",
-                body: newUser
+                body: newUser,
             }),
             invalidatesTags: ["Users"]
         })
     })
 });
+
+export const {useCreateUsersMutation} = usersAPI;

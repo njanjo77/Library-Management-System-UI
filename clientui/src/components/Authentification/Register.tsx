@@ -28,7 +28,7 @@ const schema = yup.object({
 export const Register = ()  => {
   const navigate = useNavigate();
 
-  const [createUser, {isLoading}] = usersAPI.useCreateUserMutation()
+  const [createUser, { isLoading }] = usersAPI.useCreateUsersMutation()
   const {
     register,
     handleSubmit,
@@ -41,11 +41,13 @@ export const Register = ()  => {
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) =>{
         try {
           const userData = { ...data, role: 'Member' as const };
-          console.log("Sending user data to backend:", userData);
+          
           // await axios.post('http://localhost:3000/api/users/create', userData)
           const response = await createUser(userData).unwrap()
+
+          console.log("Sending user data to backend:", userData);
           console.log("Response", response)
-          toast.success(response.message)
+          toast.success("Account created successfully! Please log in.")
           // redirect the user to verify
           setTimeout(()=>{
               navigate('/login', {

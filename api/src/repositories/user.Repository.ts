@@ -1,5 +1,7 @@
 
 import { getPool } from "../config/database";
+import sql from "mssql";
+import bcrypt from "bcrypt";
 import { User,existingUser,newUser,updateUser } from "../types/users.types";
 
 export const getAdmins = async (): Promise<User[]> => {
@@ -113,29 +115,62 @@ export const getUserById = async (user_id: number): Promise<User | null> => {
   }
 };
 
-export const insertUser = async (user: newUser): Promise<User[] | null> => {
+export const insertUser = async (user: newUser): Promise<User | null> => {
   try {
     const pool = await getPool();
-    
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+
+    // Insert user
     await pool
       .request()
-      .input("username", user.username)
-      .input("email", user.email)
-      .input("password", user.password)
-      .input("role", user.role?? 'Member')
-      .input("date", user.created_at)
+      .input("username", sql.VarChar, user.username)
+      .input("email", sql.VarChar, user.email)
+      .input("password_hash", sql.VarChar, hashedPassword)
+      .input("role", sql.VarChar, user.role ?? "Member")
+      .input("created_at", sql.DateTime, new Date())
       .query(`
         INSERT INTO Users (username, email, password_hash, role, created_at)
-        VALUES (@username, @email, @password, @role, @date)
+        VALUES (@username, @email, @password_hash, @role, @created_at)
       `);
-     const newUser=await pool.request().input("email",user.email).query("SELECT * FROM Users WHERE email=@email ")
-  
-     return newUser.recordset[0]
+
+    // Return newly created user
+    const result = await pool
+      .request()
+      .input("email", sql.VarChar, user.email)
+      .query("SELECT * FROM Users WHERE email = @email");
+
+    return result.recordset[0];
   } catch (error) {
     console.error("Failed to insert user:", error);
     throw error;
   }
 };
+
+// export const insertUser = async (user: newUser): Promise<User[] | null> => {
+//   try {
+//     const pool = await getPool();
+    
+//     await pool
+//       .request()
+//       .input("username", user.username)
+//       .input("email", user.email)
+//       .input("password", user.password)
+//       .input("role", user.role?? 'Member')
+//       .input("date", user.created_at)
+//       .query(`
+//         INSERT INTO Users (username, email, password_hash, role, created_at)
+//         VALUES (@username, @email, @password, @role, @date)
+//       `);
+//      const newUser=await pool.request().input("email",user.email).query("SELECT * FROM Users WHERE email=@email ")
+  
+//      return newUser.recordset[0]
+//   } catch (error) {
+//     console.error("Failed to insert user:", error);
+//     throw error;
+//   }
+// };
 
 export const deleteUser = async (user_id: number): Promise<void> => {
   try {
