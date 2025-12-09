@@ -5,6 +5,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import { persistReducer, persistStore } from 'redux-persist'
 // import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import storage from 'redux-persist/es/storage'
+import userSlice  from "../auth/userSlice"
 
 
 
@@ -13,14 +14,15 @@ const persistConfig = {
   key: 'root',
     version: 1,
     storage,
-    whitelist: ['User']
+    whitelist: ['user']
     // blacklist: [usersAPI.reducerPath, loginApi.reducerPath],
 }
 
 
 const rootReducer = combineReducers({
     [usersAPI.reducerPath]: usersAPI.reducer,
-    [loginApi.reducerPath]: loginApi.reducer
+    [loginApi.reducerPath]: loginApi.reducer,
+    user: userSlice,
 });
 
 

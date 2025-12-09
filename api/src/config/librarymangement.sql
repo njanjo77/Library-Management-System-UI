@@ -80,6 +80,7 @@ INSERT INTO Users (username, email, password_hash, role) VALUES
 ('member2', 'member2@library.com', 'hashed_password_member2', 'Member');
 
 SELECT * FROM Users;
+SELECT email, password_hash FROM Users WHERE email = 'ujinga@gmail.com';
 
 -- Insert Books
 INSERT INTO Books (title, author, category_id, publication_year, stock_quantity) VALUES

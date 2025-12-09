@@ -44,3 +44,13 @@ export interface loginJwtConfig{
     secret:string
 
 }
+
+export interface UserFromDB {
+  user_id?: number
+  username?: string
+  email?: string
+  role?: string
+  password_hash?: string
+//   created_at?: Date
+//   updated_at?: Date
+}

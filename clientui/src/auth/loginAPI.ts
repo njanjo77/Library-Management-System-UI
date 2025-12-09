@@ -19,12 +19,22 @@ export type LoginInputs ={
 
 export const loginApi = createApi({
     reducerPath: 'loginApi',
-    baseQuery: fetchBaseQuery({baseUrl:DomainAPI}),
+    baseQuery: fetchBaseQuery({baseUrl:DomainAPI,
+        credentials: 'include',
+        prepareHeaders: (headers) => {
+      // If you use Bearer token (you do!)
+      const token = localStorage.getItem('token')
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers
+    },
+    }),
     tagTypes: ['Login'],
     endpoints:(builder) =>({
         loginUser:builder.mutation<TLoginResponse, LoginInputs>({
             query:(loginData) =>({
-               url: '/login',
+               url: '/users/login',
                method:'POST',
                body: loginData 
             }),

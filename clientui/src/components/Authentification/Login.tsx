@@ -3,8 +3,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import {  NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { type LoginInputs, useLoginUserMutation } from "@/auth/loginAPI";
+import { type LoginInputs, loginApi } from "@/auth/loginAPI";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/auth/userSlice";
 
 
 const schema = yup.object({
@@ -16,7 +18,8 @@ const schema = yup.object({
 
 
 export const Login = () => {
-  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const dispatch = useDispatch()
+  const [loginUser,{isLoading}] = loginApi.useLoginUserMutation();
 
 
   const location = useLocation()
@@ -35,13 +38,27 @@ export const Login = () => {
 
     const onSubmit: SubmitHandler<LoginInputs> = async (data) =>{
       try {
+        console.log(data)
         const response = await loginUser(data).unwrap()
         console.log(response);
         toast.success(response.message)
-        navigate('/userdashboard')
+
+        //dispatch to store the user and token
+        dispatch(loginSuccess(response))
+        console.log(response.data.role)
+        if(response.data.role === 'Admin'){
+          navigate('/admin/dashboard')
+        }else if (response.data.role === 'user'){
+          navigate('/user/dashboard')
+        }
+
+        //set token in local storage
+        localStorage.setItem('token', response.token)
+        // setToken(response.token)
+
       } catch (error: any) {
-        console.log(error)
-        toast.error(error.data?.error || 'Login failed')
+        console.log("Full RTK Query error",error)
+        //toast.error(error.data?.error || 'Login failed')
       }
             console.log(data);
       }
@@ -131,3 +148,8 @@ export const Login = () => {
     </>
   )
 }
+// }
+// function setToken(token: any): any {
+//   throw new Error("Function not implemented.");
+// }
+

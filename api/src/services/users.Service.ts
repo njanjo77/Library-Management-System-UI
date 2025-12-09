@@ -46,66 +46,28 @@ export const getUserByEmail=async(user_email:string)=>{
     delete user?.password_hash
     return user
 }
-export const insertUser = async (user: newUser) => {
-  try {
-    // Check for existing email
-    const existingUser = await userRepository.getUserByEmail(user.email);
-    if (existingUser) {
-      return { success: false, message: "User already exists" };
+
+export const insertUser=async(user:newUser)=>{
+    try {
+        const existingUser=await userRepository.getUserByEmail(user.email)
+        if(!existingUser){
+            const created=await getDate()
+            const hashed= await hashPassword(user.password)
+            user.created_at=new Date(created)
+            user.password=hashed
+            const registeredUser=await userRepository.insertUser(user)
+            registeredUser?.forEach(user=>{
+              delete user.password_hash
+            })
+            return {registeredUser}
+        }
+        else{
+            return {success:false,Message:"User already exists"}
+        }   
+    } catch (error:any) {
+        return {success:false,error:error.message}
     }
-
-    // Prepare user info
-    const created = await getDate();
-    const hashed = await hashPassword(user.password);
-
-    user.created_at = new Date(created);
-    user.password = hashed;
-
-    // Run INSERT query
-    const result = await userRepository.insertUser(user);
-
-    // Support both shapes returned by repository:
-    // - mssql Result object with rowsAffected and recordset
-    // - plain User[] array
-    const insertedCount = (result as any)?.rowsAffected?.[0] ?? (Array.isArray(result) ? result.length : 0);
-    if (!result || insertedCount !== 1) {
-      return { success: false, message: "Failed to insert user into database" };
-    }
-
-    const data = (result as any).recordset ?? (Array.isArray(result) ? result : []);
-
-    return {
-      success: true,
-      message: "User registered",
-      data
-    };
-
-  } catch (error: any) {
-    return { success: false, message: error.message };
-  }
-};
-
-// export const insertUser=async(user:newUser)=>{
-//     try {
-//         const existingUser=await userRepository.getUserByEmail(user.email)
-//         if(!existingUser){
-//             const created=await getDate()
-//             const hashed= await hashPassword(user.password)
-//             user.created_at=new Date(created)
-//             user.password=hashed
-//             const registeredUser=await userRepository.insertUser(user)
-//             registeredUser?.forEach(user=>{
-//               delete user.password_hash
-//             })
-//             return {registeredUser}
-//         }
-//         else{
-//             return {success:false,Message:"User already exists"}
-//         }   
-//     } catch (error:any) {
-//         return {success:false,error:error.message}
-//     }
-// }
+}
 
 export const loginUser = async (userData: existingUser) => {
   try {
