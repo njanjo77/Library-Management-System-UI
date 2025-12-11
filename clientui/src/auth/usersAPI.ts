@@ -5,14 +5,13 @@ import { DomainAPI } from "../utils/ApiDomain"
 
 
 export type TUser = {
-    // user_id: number;
+    user_id: number;
     username: string;
     email: string;
     password: string;
     role: string;
-    date: string;
-    // created_at: string;
-    // updated_at: string;
+    created_at: string;
+    updated_at: string;
 
 }
 

@@ -3,13 +3,14 @@ import { DomainAPI } from "@/utils/ApiDomain"
 
 export type TLoginResponse ={
     message: string,
-    token: string,
+    
     user:{
       user_id: string,
       username: string,
       role: string,
       created_at: string,
-      updated_at: string
+      updated_at: string,
+      token: string,
     }
 }
 export type LoginInputs ={

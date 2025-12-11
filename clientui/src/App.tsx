@@ -6,7 +6,7 @@ import { Login } from "./components/Authentification/Login";
 import { Footer } from "./components/footer/Footer";
 import { Heropage } from "./pages/Heropage";
 // import AdminDashboard from "./dashboard/admindashboard/content/AdminDashboard";
-import { Books } from "./pages/Books";
+import { Books } from "./dashboard/admindashboard/content/AdminBooks";
 import { Members } from "./pages/Members";
 import { Borrowrecords } from "./pages/Borrowrecords";
 import { SettingsForm } from "./pages/Settings";
@@ -28,28 +28,28 @@ const router = createBrowserRouter([
    element: <Heropage />,
   },
  
-   {
-    path: "/books",
-    element: <Books />
-  },
-   {
-    path: "/members",
-    element: <Members />
-  },
-  {
+  //  {
+  //   path: "/books",
+  //   element: <Books />
+  // },
+  //  {
+  //   path: "/members",
+  //   element: <Members />
+  // },
+  // {
 
-    path: "/borrowrecords",
-    element: <Borrowrecords />
-  },
-  {
-    path: "/settings",
-    element: <SettingsForm />
-  },
+  //   path: "/borrowrecords",
+  //   element: <Borrowrecords />
+  // },
+  // {
+  //   path: "/settings",
+  //   element: <SettingsForm />
+  // },
 
-  {
-    path: "/userdashboard",
-    element: <UserDashboard />
-  },
+  // {
+  //   path: "/userdashboard",
+  //   element: <UserDashboard />
+  // },
    {
     path: "/register",
     element: <Register />

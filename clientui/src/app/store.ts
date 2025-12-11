@@ -6,7 +6,7 @@ import { persistReducer, persistStore } from 'redux-persist'
 // import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import storage from 'redux-persist/es/storage'
 import userSlice  from "../auth/userSlice"
-
+import { booksAPI } from "@/books/booksApi"
 
 
 
@@ -22,6 +22,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     [usersAPI.reducerPath]: usersAPI.reducer,
     [loginApi.reducerPath]: loginApi.reducer,
+    [booksAPI.reducerPath]: booksAPI.reducer,
     user: userSlice,
 });
 
@@ -36,6 +37,7 @@ export const store = configureStore({
         })
         .concat(usersAPI.middleware)
         .concat(loginApi.middleware)
+        .concat(booksAPI.middleware)
 
 })
 

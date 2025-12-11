@@ -38,12 +38,24 @@ export const getMembers=async()=>{
 
 export const getMemberId=async(member_id:number)=>{
     const member=await userRepository.getMemberId(member_id)
-    delete member?.password_hash
+    if(Array.isArray(member)){
+        member.forEach(m=>{
+            delete m?.password_hash
+        })
+    } else {
+        delete member?.password_hash
+    }
     return member
 }
 export const getUserByEmail=async(user_email:string)=>{
     const user=await userRepository.getUserByEmail(user_email)
-    delete user?.password_hash
+    if(Array.isArray(user)){
+        user.forEach(u=>{
+            delete u?.password_hash
+        })
+    } else {
+        delete user?.password_hash
+    }
     return user
 }
 
@@ -103,7 +115,7 @@ export const loginUser = async (userData: existingUser) => {
     }
 
     const payloadWithToken = { ...payload, token };
-    return { success: true, message: "Logged in successfully", data: payloadWithToken };
+    return { success: true, message: "Logged in successfully", user: payloadWithToken };
 
   } catch (error) {
     console.error("Error in loginUser:", error);

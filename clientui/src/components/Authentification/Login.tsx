@@ -38,22 +38,18 @@ export const Login = () => {
 
     const onSubmit: SubmitHandler<LoginInputs> = async (data) =>{
       try {
-        console.log(data)
         const response = await loginUser(data).unwrap()
-        console.log(response);
+        console.log('here',response);
         toast.success(response.message)
 
         //dispatch to store the user and token
         dispatch(loginSuccess(response))
-        console.log(response.data.role)
-        if(response.data.role === 'Admin'){
-          navigate('/admin/dashboard')
-        }else if (response.data.role === 'user'){
-          navigate('/user/dashboard')
-        }
+      
+        navigate('/')
+
 
         //set token in local storage
-        localStorage.setItem('token', response.token)
+        localStorage.setItem('token', response.user.token)
         // setToken(response.token)
 
       } catch (error: any) {

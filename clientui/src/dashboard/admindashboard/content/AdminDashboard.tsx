@@ -55,7 +55,7 @@ const AdminDashboard: React.FC = () => {
         </span>
       </div>
 
-      {/* ===== FIXED/FLEX LAYOUT: Drawer + Main Content SIDE BY SIDE ===== */}
+      
       <div className="flex">
         {/* Drawer */}
         <aside
