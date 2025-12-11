@@ -1,53 +1,6 @@
-
-// import dotenv from 'dotenv';
-// import assert from 'assert';
-// import sql from 'mssql';
-// dotenv.config();
-
-// const {
-//     SQL_SERVER,
-//     SQL_DB,
-//     SQL_USER,
-//     SQL_PWD,
-//     SQL_PORT,
-// }= process.env;
-
-// assert(SQL_PORT, 'PORT is required');
-// assert(SQL_SERVER, 'SQL_SERVER is required');
-// assert(SQL_DB, 'SQL_DB is required');
-// assert(SQL_USER, 'SQL_USER is required');
-// assert(SQL_PWD, 'SQL_PWD is required');
-
-// export const config ={
-//     port:PORT,
-//     sqlConfig: {
-//         user: SQL_USER,
-//         password: SQL_PWD,
-//         database: SQL_DB,
-//         server: SQL_SERVER,
-//         pool:{
-//             max:10,
-//             min:0,
-//             idleTimeoutMillis: 30000
-//         },
-//         options:{
-//             encrypt: true,
-//             trustServerCertificate: true
-//         }
-//     }
-// }
-
-// export const getPool = async () => {
-//     try {
-//         const pool = await sql.connect(config.sqlConfig)
-//         return pool;
-//     } catch (error) {
-//         console.log("SQL Connection error", error);
-//         throw error
-//     }
-// }
 import dotenv from 'dotenv';
-import sql from 'mssql';
+import { Sequelize } from 'sequelize-typescript';
+import { User, Category, Member, Book, BorrowRecord, Comment, Setting } from '../models';
 dotenv.config();
 
 const {
@@ -65,30 +18,32 @@ if (!SQL_PWD) throw new Error('SQL_PWD environment variable is required');
 
 const port = SQL_PORT ? Number(SQL_PORT) : 1433;
 
-export const sqlConfig = {
-  user: SQL_USER,
-  password: SQL_PWD,
-  database: SQL_DB,
-  server: SQL_SERVER,
+const sequelize = new Sequelize({
+  dialect: 'mssql',
+  host: SQL_SERVER,
   port,
-  pool: {
-    max: 10,
-    min: 0,
-    idleTimeoutMillis: 30000
+  database: SQL_DB,
+  username: SQL_USER,
+  password: SQL_PWD,
+  models: [User, Category, Member, Book, BorrowRecord, Comment, Setting],
+  dialectOptions: {
+    options: {
+      encrypt: false,
+      trustServerCertificate: true,
+    },
   },
-  options: {
-    encrypt: false,
-    trustServerCertificate: true
-  }
-};
+  logging: console.log,
+});
 
-export const getPool = async () => {
+export const connectDB = async () => {
   try {
-    const pool = await sql.connect(sqlConfig);
-    console.log("Connected to SQL Server");
-    return pool;
+    await sequelize.authenticate();
+    console.log('Database connected via Sequelize');
+    await sequelize.sync({ alter: true });
   } catch (error) {
-    console.log("SQL Connection error:", error);
+    console.error('Unable to connect to the database:', error);
     throw error;
   }
 };
+
+export { sequelize };

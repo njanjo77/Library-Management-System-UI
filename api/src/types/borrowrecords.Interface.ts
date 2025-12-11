@@ -6,18 +6,18 @@ export interface getBorrowById{
 
 export interface borrowrecords{
     borrow_id: number,
-    user_id: number,
+    member_id: number,
     book_id: number,
     borrow_date: string,
     due_date: string,
-    return_date: string,
-    status?: string,
+    return_date: string | null,
+    status: string,
     created_at: string,
     updated_at: string;
 };
 
 export interface newBorrowRecord{
-    user_id: number,
+    member_id: number,
     book_id: number,
     borrow_date: string,
     due_date: string,

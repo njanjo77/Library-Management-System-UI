@@ -6,9 +6,9 @@ export type TBook = {
   book_id?: number;
   title: string;
   author: string;
-  category_id: string;
-  published_year?: string;
-  stock_quantity?: number;
+  category_id?: number | null;
+  publication_year?: number | null;
+  stock_quantity: number;
   created_at?: string;
   updated_at?: string;
 };

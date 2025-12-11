@@ -1,5 +1,5 @@
 import  express from "express";
-import { getPool } from "./config/database";
+import { connectDB } from "./config/database";
 import userRouter from "./router/user.routes";
 import borrowRouter from "./router/borrowrecords.Routes";
 import categoriesRouter from './router/categories.Routes';
@@ -28,9 +28,10 @@ app.use('/api/books', booksRouter);
 app.use('/api', commentsRouter);
 
 
- 
 
 //middleware
+
+
 
 
 app.get("/", (req, res) => {
@@ -52,13 +53,12 @@ app.post("/users/create",rateLimiterMiddleware, async (req, res) => {
 // });
 
 const port = process.env.PORT;
-app.listen(port, () => {
+app.listen(port, async () => {
     console.log(`Server is running on http://localhost:${port}`)
+    try {
+        await connectDB();
+        console.log("Database connected successfully");
+    } catch (err) {
+        console.error("Database connection failed", err);
+    }
 })
-
-
-
-
-getPool()
-.then(() => console.log("Database connected successfully"))
-.catch((err: any) => console.error("Database connection failed", err))
